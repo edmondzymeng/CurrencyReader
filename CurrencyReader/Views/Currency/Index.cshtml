@@ -1,0 +1,37 @@
+﻿@model CurrencyReader.Models.CurrencyConverter
+@{
+    ViewBag.Title = "Currency Reader";
+}
+@section scripts{
+    <script src="../../Scripts/currency.reader.js" type="text/javascript"></script>
+}
+@section css{
+    <style type="text/css">
+        #textarea-output {
+            margin: 10px 0 0;
+            max-width: 100%;
+            min-height: 200px;
+            resize: none;
+            width: 100%;
+        }
+        #error-msg {
+            margin: 10px 0 0;
+        }
+    </style>
+}
+
+<h1>@ViewBag.Title</h1>
+<p class="lead">Convert a number to an English word currency representation</p>
+
+<form class="form-inline" onsubmit="converter.convertCurrencyToRepresentation(); return false;">
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon">$</div>
+            <input type="text" id="input-currency" name="InputNumber" class="form-control" autocomplete="off" placeholder="Currency">
+        </div>
+        <button type="submit" id="btn-convert-english" class="btn btn-primary">Convert to English</button>
+    </div>
+</form>
+<div id="error-msg" class="text-warning"></div>
+<textarea id="textarea-output" class="text-info" readonly>
+</textarea>

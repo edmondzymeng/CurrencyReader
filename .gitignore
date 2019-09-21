@@ -1,0 +1,8 @@
+*.suo
+*.mdb
+*.ldb
+
+.vs
+
+bin/
+obj/

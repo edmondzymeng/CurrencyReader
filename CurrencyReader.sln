@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyReader", "CurrencyReader\CurrencyReader.csproj", "{2CBDD70E-17F1-44D5-B566-C7A480DFE63F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyReader.Tests", "CurrencyReader.Tests\CurrencyReader.Tests.csproj", "{E730E3C2-F918-4F6C-9F9D-DD9D06479DDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CBDD70E-17F1-44D5-B566-C7A480DFE63F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CBDD70E-17F1-44D5-B566-C7A480DFE63F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CBDD70E-17F1-44D5-B566-C7A480DFE63F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CBDD70E-17F1-44D5-B566-C7A480DFE63F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E730E3C2-F918-4F6C-9F9D-DD9D06479DDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E730E3C2-F918-4F6C-9F9D-DD9D06479DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E730E3C2-F918-4F6C-9F9D-DD9D06479DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E730E3C2-F918-4F6C-9F9D-DD9D06479DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89514914-4B66-4B59-BEC9-F280C11BE44C}
+	EndGlobalSection
+EndGlobal
