@@ -83,7 +83,7 @@ namespace CurrencyReader.Tests.Models
             Assert.IsNotNull(convertResult);
             Assert.IsTrue(convertResult.IsSuccessful);
             Assert.AreEqual("One Dollar and One Cent", convertResult.Data);
-            
+
             model.InputNumber = "240,000,100.00";
             convertResult = model.Convert();
             Assert.IsNotNull(convertResult);
@@ -146,6 +146,40 @@ namespace CurrencyReader.Tests.Models
             Assert.AreEqual("Ninety Nine Septillion Nine Hundred and Ninety Nine Sextillion Nine Hundred and Ninety Nine Quintillion" +
                 " Nine Hundred and Ninety Nine Quadrillion Nine Hundred and Ninety Nine Trillion Nine Hundred and Ninety Nine Billion Nine Hundred" +
                 " and Ninety Nine Million Nine Hundred and Ninety Nine Thousand Nine Hundred and Ninety Nine Dollars and Ninety Nine Cents", convertResult.Data);
+        }
+
+        [TestMethod]
+        public void TestConvertZero()
+        {
+            var model = new CurrencyConverter()
+            {
+                InputNumber = "0"
+            };
+            
+            var convertResult = model.Convert();
+            Assert.IsNotNull(convertResult);
+            Assert.IsTrue(convertResult.IsSuccessful);
+            Assert.AreEqual("Zero", convertResult.Data);
+        }
+
+        [TestMethod]
+        public void TestConvertNegativeNumber()
+        {
+            var model = new CurrencyConverter()
+            {
+                InputNumber = "-1.151"
+            };
+
+            var convertResult = model.Convert();
+            Assert.IsNotNull(convertResult);
+            Assert.IsTrue(convertResult.IsSuccessful);
+            Assert.AreEqual("Negative One Dollar and Fifteen Cents", convertResult.Data);
+
+            model.InputNumber = "-1.155";
+            convertResult = model.Convert();
+            Assert.IsNotNull(convertResult);
+            Assert.IsTrue(convertResult.IsSuccessful);
+            Assert.AreEqual("Negative One Dollar and Sixteen Cents", convertResult.Data);
         }
 
         [TestMethod]

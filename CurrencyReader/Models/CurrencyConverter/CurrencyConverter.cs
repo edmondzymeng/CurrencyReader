@@ -11,7 +11,7 @@ namespace CurrencyReader.Models
         public const decimal MININPUTNUM = -99999999999999999999999999.99m;
         public const decimal MAXINPUTNUM = 99999999999999999999999999.99m;
         public const string AND = "and ";
-        public const string MINUSPREFIX = "Minus ";
+        public const string NEGATIVEPREFIX = "Negative ";
         public const string DOLLAR = " Dollar";
         public const string DOLLARS = " Dollars";
         public const string CENT = " Cent";
@@ -31,12 +31,12 @@ namespace CurrencyReader.Models
         public static readonly Regex NotNumberRegex = new Regex("[^0-9]+");
 
         /// <summary>
-        /// Number string to be converted to a currency presentation
+        /// Number string to be converted to a currency representation
         /// </summary>
         public string InputNumber { get; set; }
 
         /// <summary>
-        /// Convert a number string to currency presentation
+        /// Convert a number string to currency representation
         /// </summary>
         /// <returns></returns>
         public OperationResult<string> Convert()
@@ -67,7 +67,7 @@ namespace CurrencyReader.Models
         /// Decimal maximum value is 79228162514264337593543950335 and minimum value is -79228162514264337593543950335
         /// However, since decimal value only has 28-29 digit precision, we will limit the data in the range
         /// [-99999999999999999999999999.99, 99999999999999999999999999.99]
-        /// Also we will check how many digits exist in the input string, only 28 digits are allowed,
+        /// Also we will check how many digits exist in the input string, only allow 28 digits,
         /// e.g. 99999999999999999999999999.989 is not allowed because it has 29 digits.
         /// </remarks>
         /// <param name="numStr">String to be converted</param>
@@ -102,29 +102,29 @@ namespace CurrencyReader.Models
         }
 
         /// <summary>
-        /// Convert a decimal type currency number to English presentation.
+        /// Convert a decimal type currency number to English representation.
         /// </summary>
         /// <remarks>
         /// Rule:
-        /// If it is a negative number, add "Minus " before the digit part;
-        /// If it is zero, just return "Zero";
-        /// If it is a positive number:
-        ///     If it is less than 1 dollar, return "xxx Cent(s)"
-        ///     If it is larger than or equal to 1 dollar(without decimal), return "xxx Dollar(s)"
-        ///     If it is larger than or equal to 1 dollar(with decimal), return "xxx Dollar(s) and xxx Cent(s)"
-        /// Attention:
-        ///     1. Mind plural form;
-        ///     2. Round the number to accounting number format;
-        ///     3. No "and" after "Thousand", "Million", "Billion",
-        ///        while there should be "and" after "Hundred" if the next section before the next thousandth is not "00":
-        ///            e.g. 130,423 is "One Hundred and Thirty Thousand Four Hundred and Twenty Three Dollars"
-        ///                 1,000,010,000 is "One Billion Ten Thousand Dollars";
-        ///        Exception: If the hundreds place is 0, but the tens place or ones place is not,
-        ///                   there should be "and" after the last "Thousand", "Million" or "Billion":
-        ///            e.g. 130,023 is "One Hundred and Thirty Thousand and Twenty Three Dollars"
+        /// If it is a negative number, there would be a "Negative " before the digit part representation;
+        /// If it is zero, it will return "Zero";
+        /// If it is a positive number, consider the following circumstances:
+        ///     When it is less than 1 dollar, return "xx Cent(s)"
+        ///     When it is larger than or equal to 1 dollar(without decimal), return "xxx Dollar(s)"
+        ///     When it is larger than or equal to 1 dollar(with decimal), return "xxx Dollar(s) and xx Cent(s)"
+        /// Note:
+        ///     1. Pay attention to plural form for Dollar/Dollars or Cent/Cents;
+        ///     2. Round the number to two decimal places;
+        ///     3. Do NOT add "and" after thousands representation ("Thousand", "Million", "Billion", etc.),
+        ///        add "and" between "Hundred" and the next tens or ones place, e.g.:
+        ///            130,423 is "One Hundred and Thirty Thousand Four Hundred and Twenty Three Dollars"
+        ///            1,000,010,000 is "One Billion Ten Thousand Dollars";
+        ///        Exception: If the hundreds place is 0, but the tens place or ones place is not 0,
+        ///                   there should be "and" after the last thousands representation, e.g.:
+        ///            130,023 is "One Hundred and Thirty Thousand and Twenty Three Dollars"
         /// </remarks>
         /// <param name="num">Currency number to be converted</param>
-        /// <returns>English presentation of the currency number</returns>
+        /// <returns>English representation of the currency number</returns>
         private string ConvertToEnglish(decimal num)
         {
             var convertResult = string.Empty;
@@ -134,7 +134,7 @@ namespace CurrencyReader.Models
             if (num < 0)
             {
                 convertResult = ConvertToEnglish(decimal.Negate(num));
-                convertResult = MINUSPREFIX + convertResult;
+                convertResult = NEGATIVEPREFIX + convertResult;
                 return convertResult;
             }
 
@@ -163,7 +163,7 @@ namespace CurrencyReader.Models
         }
 
         /// <summary>
-        /// Convert a decimal type number to English presentation.
+        /// Convert a positive decimal type integer to English representation.
         /// </summary>
         /// <remarks>
         /// Name	    Number of Zeros  Groups of (3) Zeros
@@ -180,13 +180,13 @@ namespace CurrencyReader.Models
         /// Octillion	27              9
         /// </remarks>
         /// <param name="num">Decimal number to be converted</param>
-        /// <returns>English presentation of the number</returns>
-        private string NumberToEnglish(decimal num)
+        /// <returns>English representation of the number</returns>
+        private string IntegerToEnglish(decimal num)
         {
             string convertResult = string.Empty;
 
             // Cannot use Math.Pow or Math.Log10 to deal with big decimals, get the number of digits from Scientific Notation
-            var numOfDigits = int.Parse(num.ToString("E").Split('+').Last());
+            var numOfDigits = int.Parse(num.ToString("E").Split(new char[] { 'E', '+' }).Last());
             while (numOfDigits >= 3)
             {
                 numOfDigits = numOfDigits / 3 * 3; // Get how many groups of (,000) there are, for example, for 12,345,678,999, there are 3 groups of (,000)
@@ -219,10 +219,10 @@ namespace CurrencyReader.Models
         }
 
         /// <summary>
-        /// Convert an integer less than 100 to English presentation. Ensure integer is less than 1000 and larger than 0
+        /// Convert an integer less than 100 to English representation. Ensure integer is less than 1000 and larger than 0
         /// </summary>
         /// <param name="num">Integer number to be converted</param>
-        /// <returns>English presentation of the number</returns>
+        /// <returns>English representation of the number</returns>
         private string IntegerLessThan1000ToEnglish(int num)
         {
             string convertResult = string.Empty;
@@ -258,10 +258,10 @@ namespace CurrencyReader.Models
         }
 
         /// <summary>
-        /// Get English presentation of the integer part of a currency number
+        /// Get English representation of the integer part of a currency number
         /// </summary>
         /// <param name="num">Currency number to be converted</param>
-        /// <returns>English presentation of the integer part</returns>
+        /// <returns>English representation of the integer part</returns>
         private string DollarsToEnglish(decimal num)
         {
             var convertResult = string.Empty;
@@ -271,16 +271,16 @@ namespace CurrencyReader.Models
                 return string.Empty;
             }
 
-            convertResult = NumberToEnglish(dollars);
+            convertResult = IntegerToEnglish(dollars);
             convertResult += (dollars > 1 ? DOLLARS : DOLLAR);
             return convertResult;
         }
 
         /// <summary>
-        /// Get English presentation of the decimal part of a currency number
+        /// Get English representation of the decimal part of a currency number
         /// </summary>
         /// <param name="num">Currency number to be converted</param>
-        /// <returns>English presentation of the decimal part</returns>
+        /// <returns>English representation of the decimal part</returns>
         private string CentsToEnglish(decimal num)
         {
             var convertResult = string.Empty;
@@ -292,7 +292,7 @@ namespace CurrencyReader.Models
                 return string.Empty;
             }
 
-            convertResult = NumberToEnglish(cents);
+            convertResult = IntegerToEnglish(cents);
             convertResult += (cents > 1 ? CENTS : CENT);
             return convertResult;
         }
