@@ -40,8 +40,9 @@ If it is a positive number, consider the following circumstances:
 		* However, there is an **Exception**: If the hundreds place is `0`, but the tens place or ones place is not `0`, there should be *and* after the last thousands representation, e.g.:
 			* *130,023* is *One Hundred and Thirty Thousand and Twenty Three Dollars*
 * Thousands representation:
+
 	Name | Number of Zeros | Groups of (3) Zeros
-	--- | --- | ---
+	:-: | :-: | :-:
 	Thousand | 3 | 1|
 	Million | 6 | 2|
 	Billion | 9 | 3|
